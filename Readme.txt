@@ -1,0 +1,1 @@
+这个是使用maven整合spring，spring mvc，security的项目，里面的简单配置可以初步使用。

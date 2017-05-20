@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- bean definitions here -->
+	<!-- 如果在Service中没有使用@Service，则需要在这里加上这个bean -->
+	<!-- <bean id="hello" class="spring02.com.service.impl.HelloServiceImpl"/> -->
+
+	<!-- 自动扫描 -->
+	<!-- 方式一：只有一个自动扫描的包的时候 -->
+	<!-- <context:component-scan base-package="spring02.com.service"/> -->
+
+	<!-- 方式二：当有多个包需要自动扫描的时候 -->
+	<!-- <context:component-scan base-package="spring02.com.service,spring02.com.aspect" /> -->
+
+	<!-- 启用自动代理 -->
+	<aop:aspectj-autoproxy />
+	<!-- <bean id="viewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/view/" />
+		<property name="suffix" value=".jsp" />
+	</bean> -->
+	<!-- <aop:config> <aop:aspect> <aop:after method=""/> </aop:aspect> </aop:config> -->
+</beans>
