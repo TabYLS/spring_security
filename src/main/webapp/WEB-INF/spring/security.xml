@@ -7,8 +7,28 @@
            http://www.springframework.org/schema/security/spring-security.xsd">
 
 	<http auto-config='true'>
+		<!-- 让没登陆的用户也可以访问login.jsp。
+			这是因为配置文件中的“/**”配置，要求用户访问任意一个系统资源时，必须拥有ROLE_USER角色，/login.jsp也不例外，
+			如果我们不为/login.jsp单独配置访问权限，会造成用户连登陆的权限都没有，这是不正确的。
+		 -->
+		<intercept-url pattern="/user/login" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<intercept-url pattern="/admin.jsp" access="ROLE_ADMIN" />
 		<intercept-url pattern="/**" access="ROLE_USER" />
+		<!-- login-page表示用户登陆时显示我们自定义的login.jsp。
+			authentication-failure-url表示用户登陆失败时，跳转到哪个页面。
+			当用户输入的登录名和密码不正确时，系统将再次跳转到/login.jsp，并添加一个error=true参数作为登陆失败的标示。
+			default-target-url表示登陆成功时，跳转到哪个页面。default-target-url="/"
+		 -->
+		<!-- 
+		直接定位到页面，但是这种方式不能访问WEB-INF目录下面的资源。
+		<form-login login-page="/login.jsp"
+                authentication-failure-url="/login.jsp?error=true"
+                default-target-url="/post_home.jsp"/> -->
+        <!-- 这种方式可以访问WEB-INF下面的资源 -->
+		<form-login login-page="/user/login"
+					authentication-failure-url="/user/login?error=true" 
+					default-target-url="/hello/goto-post" 
+					always-use-default-target='true'/>
 	</http>
 	<authentication-manager>
 		<!-- 
