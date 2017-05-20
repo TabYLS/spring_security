@@ -11,12 +11,34 @@
 		<intercept-url pattern="/**" access="ROLE_USER" />
 	</http>
 	<authentication-manager>
+		<!-- 
+		使用写死的方式管理用户权限 
 		<authentication-provider>
 			<user-service>
 				<user name="admin" password="admin" authorities="ROLE_USER, ROLE_ADMIN" />
 				<user name="user" password="user" authorities="ROLE_USER" />
 			</user-service>
+		</authentication-provider> -->
+		
+		<!-- 使用数据库管理用户权限 -->
+		<authentication-provider>
+		    <jdbc-user-service data-source-ref="dataSource"
+		    	users-by-username-query="select username,password,status as enabled from my_user where username=?"
+		    	authorities-by-username-query="select u.username,r.name as authority
+                                             from my_user u
+                                             join my_user_role ur
+                                               on u.id=ur.user_id
+                                             join my_role r
+                                               on r.id=ur.role_id
+                                            where u.username=?"/>
 		</authentication-provider>
 	</authentication-manager>
+	<!-- 使用spring创建一个演示用的dataSource实现 ，以后可以换成c3p0或者其他的dataSource-->
+	<!-- <beans:bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <beans:property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <beans:property name="jdbcUrl" value="jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8"/>
+        <beans:property name="user" value="root"/>
+        <beans:property name="password" value="123456"/>
+    </beans:bean> -->
 
 </beans:beans>

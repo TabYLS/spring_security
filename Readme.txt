@@ -1,1 +1,2 @@
-这个是使用maven整合spring，spring mvc，security的项目，里面的简单配置可以初步使用。
+1.这个是使用maven整合spring，spring mvc，security的项目，里面的简单配置可以初步使用。
+2.2017.5.20：在项目运行的时候报出了NoClassDefFoundError.（Could not initialize class org.springframework.jdbc.core.StatementCreatorUtils ），解决方法是把spring-jdbc-3.2.2.RELEASE.jar这个包放到lib目录下面，这个可能是maven的问题。
