@@ -12,7 +12,7 @@
 			如果我们不为/login.jsp单独配置访问权限，会造成用户连登陆的权限都没有，这是不正确的。
 		 -->
 		<intercept-url pattern="/user/login" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<intercept-url pattern="/admin.jsp" access="ROLE_ADMIN" />
+		<intercept-url pattern="/user/admin" access="ROLE_ADMIN" />
 		<intercept-url pattern="/**" access="ROLE_USER" />
 		<!-- login-page表示用户登陆时显示我们自定义的login.jsp。
 			authentication-failure-url表示用户登陆失败时，跳转到哪个页面。

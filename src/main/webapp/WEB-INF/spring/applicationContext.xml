@@ -20,11 +20,14 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 
 	<!-- 启用自动代理 -->
 	<aop:aspectj-autoproxy />
+	
+	<!-- 指定数据源配置properties -->  
+    <context:property-placeholder location="classpath:db.properties"/>
 	<!-- 使用spring创建一个演示用的dataSource实现 ，以后可以换成c3p0或者其他的dataSource-->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8"/>
-        <property name="user" value="root"/>
-        <property name="password" value="123456"/>
+        <property name="driverClass" value="${jdbc.driverClass}"/>
+        <property name="jdbcUrl" value="${jdbc.Url}"/>
+        <property name="user" value="${jdbc.userName}"/>
+        <property name="password" value="${jdbc.password}"/>
     </bean>
 </beans>

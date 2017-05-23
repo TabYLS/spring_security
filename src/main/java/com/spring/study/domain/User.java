@@ -1,6 +1,6 @@
 package com.spring.study.domain;
 
-public class User {
+public class User  {
 	
 	private String userName;
 	private String password;

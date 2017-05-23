@@ -9,3 +9,5 @@
 				git checkout -- <有冲突的文件路径>
 			git push origin <分支名称>（git push origin master）
 			（如果确保没有其它任何问题的话，本地和仓库又一直存在冲突：Updates were rejected because the tip of your current branch is behind；就可以使用命令： git push origin master -f）
+			
+2017.5.23: 将数据库的连接的配置盖在了db.properties配置文件中。（期间一直报错：Connections could not be acquired from the underlying database!）解决方式：把userName改掉（估计是变量冲突）参考链接：http://blog.csdn.net/qq_24949727/article/details/52144876
