@@ -5,7 +5,7 @@
 5.2017.5.21: 提交远程仓库第一次提交的时候： 
 		（1）git remote add origin https://github.com/TabYLS/spring_security.git；
 		（2）git push -u origin master
-			第一次之后提交更新：
+	     第一次之后提交更新：
 			git pull
 			if 有冲突
 				git checkout -- <有冲突的文件路径>
