@@ -20,7 +20,6 @@ public class HelloController {
 	
 	@RequestMapping(method = RequestMethod.GET, value="/goto-post")
 	public String gotoPost(User user){
-		System.out.println("你好");
 		return "post_home";
 	}
 	

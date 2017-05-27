@@ -16,13 +16,17 @@
    	<mvc:interceptors>
     	<ref bean="helloInterceptor"/>
     </mvc:interceptors>
-   <!-- 扫描所有的controller 但是不扫描service和Component；因为spring mvc并不需要调用service中的内容 -->
+    
+    <!-- 打开spring Annotation支持 -->
+	<context:annotation-config/>
+	
+	<!-- 扫描所有的controller 但是不扫描service和Component；因为spring mvc并不需要调用service中的内容 -->
 	<context:component-scan base-package="com.spring.study">
 		<!-- 类型为Controller的注解（annotation） -->
-		<context:include-filter type="annotation"
+		<!-- <context:include-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
 		<context:exclude-filter type="annotation"
-			expression="org.springframework.stereotype.Service" />
+			expression="org.springframework.stereotype.Service" /> -->
 	</context:component-scan>
 	
 	<bean

@@ -1,0 +1,30 @@
+<!-- <?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:util="http://www.springframework.org/schema/util"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd  
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">  
+      
+    <context:component-scan base-package="com.spring"></context:component-scan>  
+    指定数据源配置properties  
+    <context:property-placeholder location="classpath:db.properties"/>  
+      
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">  
+        <property name="driverClass" value="${driverClass}" ></property>  
+        <property name="jdbcUrl" value="${url}" ></property>  
+        <property name="user" value="${userName}" ></property>  
+        <property name="password" value="${password}"></property>  
+    </bean>  
+      
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>  
+    
+    让sql支持具名参数  
+    <bean id="nameTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">  
+        <constructor-arg name="dataSource" ref="dataSource" ></constructor-arg>  
+    </bean>  
+      
+</beans> -->

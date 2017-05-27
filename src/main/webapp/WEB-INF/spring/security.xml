@@ -6,59 +6,49 @@
            http://www.springframework.org/schema/security
            http://www.springframework.org/schema/security/spring-security.xsd">
 
-	<http auto-config='true'>
+	<!-- auto-config='true'开启spring security的一些默认配置，access-denied-page="/403.jsp"当没有足够的权限时候跳转到403.jsp -->
+	<http auto-config='true' access-denied-page="/403.jsp">
 		<!-- 让没登陆的用户也可以访问login.jsp。
 			这是因为配置文件中的“/**”配置，要求用户访问任意一个系统资源时，必须拥有ROLE_USER角色，/login.jsp也不例外，
 			如果我们不为/login.jsp单独配置访问权限，会造成用户连登陆的权限都没有，这是不正确的。
 		 -->
 		<intercept-url pattern="/user/login" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<intercept-url pattern="/user/admin" access="ROLE_ADMIN" />
-		<intercept-url pattern="/**" access="ROLE_USER" />
-		<!-- login-page表示用户登陆时显示我们自定义的login.jsp。
-			authentication-failure-url表示用户登陆失败时，跳转到哪个页面。
-			当用户输入的登录名和密码不正确时，系统将再次跳转到/login.jsp，并添加一个error=true参数作为登陆失败的标示。
-			default-target-url表示登陆成功时，跳转到哪个页面。default-target-url="/"
-		 -->
-		<!-- 
-		直接定位到页面，但是这种方式不能访问WEB-INF目录下面的资源。
-		<form-login login-page="/login.jsp"
-                authentication-failure-url="/login.jsp?error=true"
-                default-target-url="/post_home.jsp"/> -->
-        <!-- 这种方式可以访问WEB-INF下面的资源 -->
+		<!-- 可以通过这个方式来实现不过滤登陆页面 -->
+		<!-- <intercept-url pattern="/user/login" filters="none" /> -->
 		<form-login login-page="/user/login"
 					authentication-failure-url="/user/login?error=true" 
 					default-target-url="/hello/goto-post" 
 					always-use-default-target='true'/>
+		<logout logout-success-url="/user/login"/>
+		<custom-filter ref="myFilter" before="FILTER_SECURITY_INTERCEPTOR" /> 
 	</http>
-	<authentication-manager>
-		<!-- 
-		使用写死的方式管理用户权限 
-		<authentication-provider>
-			<user-service>
-				<user name="admin" password="admin" authorities="ROLE_USER, ROLE_ADMIN" />
-				<user name="user" password="user" authorities="ROLE_USER" />
-			</user-service>
-		</authentication-provider> -->
-		
+	
+	<beans:bean id="myFilter" class="com.spring.study.security3.filter.MyFilterSecurityInterceptor">
+		<beans:property name="authenticationManager" 
+		ref="authenticationManager"/>
+		<beans:property name="accessDecisionManager"
+		ref="myAccessDecisionManagerBean"/>
+		<beans:property name="securityMetadataSource"
+		ref="securityMetadataSource"/>
+	</beans:bean>
+	
+	<!-- 认证管理器，实现用户认证的入口，主要实现UserDetailService即可 -->
+	<authentication-manager alias="authenticationManager">
 		<!-- 使用数据库管理用户权限 -->
-		<authentication-provider>
-		    <jdbc-user-service data-source-ref="dataSource"
-		    	users-by-username-query="select username,password,status as enabled from my_user where username=?"
-		    	authorities-by-username-query="select u.username,r.name as authority
-                                             from my_user u
-                                             join my_user_role ur
-                                               on u.id=ur.user_id
-                                             join my_role r
-                                               on r.id=ur.role_id
-                                            where u.username=?"/>
+		<authentication-provider
+			user-service-ref="myUserDetailService">
+		    <!-- 如果用户的密码采用了加密的方式则要进行解析 <password-encoder hash="md5"/> -->
 		</authentication-provider>
 	</authentication-manager>
-	<!-- 使用spring创建一个演示用的dataSource实现 ，以后可以换成c3p0或者其他的dataSource-->
-	<!-- <beans:bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <beans:property name="driverClass" value="com.mysql.jdbc.Driver"/>
-        <beans:property name="jdbcUrl" value="jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8"/>
-        <beans:property name="user" value="root"/>
-        <beans:property name="password" value="123456"/>
-    </beans:bean> -->
-
+	<beans:bean id="myUserDetailService"
+		class="com.spring.study.security3.MyUserDetailService"/>
+	
+	
+	<!-- 访问决策器，巨顶某个用户具有的角色，是否有足够的权限去访问某个资源 -->
+	<beans:bean id="myAccessDecisionManagerBean"
+		class="com.spring.study.security3.MyAccessDecisionManager"/>
+		
+	<!-- 资源数据定义，即定义某一资源可以被哪些角色访问 -->
+	<beans:bean id="securityMetadataSource"
+		class="com.spring.study.security3.MyInvocationSecurityMetadataSource"/>
 </beans:beans>
